@@ -128,7 +128,7 @@ style:
         - maki:circle
 ---
 
-[out:json][timeout:55][bbox:{{bbox}}];
+[out:json][timeout:55][out:json][timeout:55][bbox:43.2915,-79.8908,43.4296,-79.8035];
 area(3607034889)->.searchArea;
 (
   way["highway"="cycleway"](area.searchArea);
