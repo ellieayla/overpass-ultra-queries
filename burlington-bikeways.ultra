@@ -1,4 +1,8 @@
 ---
+options:
+  attributionControl:
+    customAttribution: '<a href=".">Ultra</a> | <a href="https://github.com/ellieayla/overpass-ultra-queries">Github</a>'
+  bounds: [ 43.2915, -79.8908, 43.4296, -79.8035]
 style:
   extends: https://api.protomaps.com/styles/v5/white/en.json?key=f8eceeaad6896c92
   layers:
@@ -128,7 +132,7 @@ style:
         - maki:circle
 ---
 
-[out:json][timeout:55][out:json][timeout:55][bbox:43.2915,-79.8908,43.4296,-79.8035];
+[out:json][timeout:55][out:json][timeout:55];
 area(3607034889)->.searchArea;
 (
   way["highway"="cycleway"](area.searchArea);
