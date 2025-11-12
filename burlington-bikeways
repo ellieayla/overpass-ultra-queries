@@ -1,0 +1,146 @@
+---
+style:
+  extends: https://api.protomaps.com/styles/v5/white/en.json?key=f8eceeaad6896c92
+  layers:
+    - type: line
+      beforeLayerId: road_path_oneway
+      filter:
+        - any
+        - [ ==, [ get, cycleway ], track ]
+        - [ ==, [ get, 'cycleway:both' ], track ]
+        - [ ==, [ get, 'cycleway:right' ], track ]
+        - [ ==, [ get, 'cycleway:left' ], track ]
+      paint: &paint
+        line-width:
+          stops: [ [ 13, 2.5 ], [ 16, 4 ] ]
+        line-color: blue
+    - type: line
+      beforeLayerId: road_path_oneway
+      filter:
+        - any
+        - [ ==, [ get, cycleway ], lane ]
+        - [ ==, [ get, 'cycleway:both' ], lane ]
+        - [ ==, [ get, 'cycleway:right' ], lane ]
+        - [ ==, [ get, 'cycleway:left' ], lane ]
+      paint:
+        <<: *paint
+        line-dasharray: [ 4, 2 ]
+    - type: line
+      beforeLayerId: road_path_oneway
+      filter:
+        - any
+        - [ ==, [ get, cycleway ], shared_lane ]
+        - [ ==, [ get, 'cycleway:both' ], shared_lane ]
+        - [ ==, [ get, 'cycleway:right' ], shared_lane ]
+        - [ ==, [ get, 'cycleway:left' ], shared_lane ]
+      paint:
+        <<: *paint
+        line-dasharray: [ 1, 2 ]
+    - type: line
+      beforeLayerId: road_path_oneway
+      filter:
+        - any
+        - [ ==, [ get, highway ], residential ]
+      paint:
+        <<: *paint
+        line-color: lightgray
+    - type: line
+      beforeLayerId: road_path_oneway
+      filter:
+        - any
+        - [ ==, [ get, highway ], cycleway ]
+        - [ ==, [ get, bicycle ], designated ]
+      paint:
+        <<: *paint
+        line-color: darkblue
+    - type: line
+      beforeLayerId: road_path_oneway
+      filter:
+        - any
+        - [ ==, [ get, highway ], cycleway ]
+        - [ ==, [ get, bicycle ], designated ]
+        - [ ==, [ get, 'cycleway:both' ], track ]
+        - [ ==, [ get, 'cycleway:left' ], track ]
+        - [ ==, [ get, 'cycleway:right' ], track ]
+      paint:
+        <<: *paint
+        line-blur: 3
+        line-width: 25
+        line-color: rgba(0, 0, 170, 0.3)
+    - type: line
+      beforeLayerId: road_path_oneway
+      filter:
+        - all
+        - [ ==, [ get, highway ], footway ]
+        - [ '!=', [ get, bicycle ], no ]
+      paint:
+        <<: *paint
+        line-color: green
+        line-dasharray: [ 1, 1 ]
+    - type: symbol
+      filter: [ ==, [ geometry-type ], Point ]
+      icon-halo-width: 2
+      icon-halo-blur: 1
+      icon-halo-color: white
+      icon-size:
+        - case
+        - [ ==, [ get, amenity ], bicycle_repair_station ]
+        - 0.75
+        - [ ==, [ get, amenity ], bicycle_parking ]
+        - 0.5
+        - [ ==, [ get, bicycle_rental ], docking_station ]
+        - 0.75
+        - 1
+      icon-color:
+        - case
+        - [ ==, [ get, amenity ], bicycle_repair_station ]
+        - rgb(0, 146, 218)
+        - [ ==, [ get, amenity ], bicycle_parking ]
+        - rgb(0, 146, 218)
+        - [ ==, [ get, bicycle_rental ], docking_station ]
+        - rgb(0, 146, 218)
+        - [ ==, [ get, shop ], bicycle ]
+        - rgb(172, 57, 172)
+        - [ ==, [ get, amenity ], bicycle_rental ]
+        - rgb(172, 57, 172)
+        - black
+      symbol-sort-key:
+        - case
+        - [ ==, [ get, amenity ], bicycle_repair_station ]
+        - 30
+        - [ ==, [ get, amenity ], bicycle_parking ]
+        - 40
+        - [ ==, [ get, amenity ], bicycle_rental ]
+        - 10
+        - [ ==, [ get, shop ], bicycle ]
+        - 0
+        - 50
+      icon-image:
+        - case
+        - [ ==, [ get, amenity ], bicycle_repair_station ]
+        - temaki:bicycle_repair
+        - [ ==, [ get, amenity ], bicycle_parking ]
+        - temaki:bicycle_parked
+        - [ ==, [ get, amenity ], bicycle_rental ]
+        - temaki:bicycle_rental
+        - [ ==, [ get, shop ], bicycle ]
+        - maki:bicycle
+        - maki:circle
+---
+
+[out:json][timeout:55][bbox:{{bbox}}];
+area(3607034889)->.searchArea;
+(
+  way["highway"="cycleway"](area.searchArea);
+  way["highway"="footway"]["bicycle"!="no"](area.searchArea);  
+  way["highway"="tertiary"]["maxspeed"="40"](area.searchArea);
+  way["bicycle"="designated"](area.searchArea);
+  way["bicycle"="yes"](area.searchArea);
+  way["highway"="residential"](area.searchArea);
+  way["cycleway"](area.searchArea);
+  way["cycleway:both"](area.searchArea);
+  way["cycleway:left"](area.searchArea);
+  way["cycleway:right"](area.searchArea);
+
+);
+out geom;
