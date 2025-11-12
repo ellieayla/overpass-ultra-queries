@@ -4,7 +4,7 @@ options:
     customAttribution: '<a href=".">Ultra</a> | <a href="https://github.com/ellieayla/overpass-ultra-queries">Github</a>'
   bounds: [ 43.2915, -79.8908, 43.4296, -79.8035]
 style:
-  extends: https://api.protomaps.com/styles/v5/white/en.json?key=f8eceeaad6896c92
+  extends: https://styles.trailsta.sh/protomaps-grayscale.json
   layers:
     - type: line
       beforeLayerId: road_path_oneway
@@ -132,7 +132,7 @@ style:
         - maki:circle
 ---
 
-[out:json][timeout:55][out:json][timeout:55];
+[out:json][timeout:300];
 area(3607034889)->.searchArea;
 (
   way["highway"="cycleway"](area.searchArea);
@@ -145,6 +145,5 @@ area(3607034889)->.searchArea;
   way["cycleway:both"](area.searchArea);
   way["cycleway:left"](area.searchArea);
   way["cycleway:right"](area.searchArea);
-
 );
 out geom;
