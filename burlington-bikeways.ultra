@@ -2,8 +2,8 @@
 options:
   attributionControl:
     customAttribution: '<a href=".">Ultra</a> | <a href="https://github.com/ellieayla/overpass-ultra-queries">Github</a>'
-  #bounds: [ 43.2915, -79.8908, 43.4296, -79.8035]
-  center: [43.3939, -79.8257]
+  # N.B.: MapLibre GL JS uses longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON.
+  center: [-79.8257, 43.3939]
   zoom: 10.83
 style:
   extends: https://styles.trailsta.sh/protomaps-grayscale.json
