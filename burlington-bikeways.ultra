@@ -133,7 +133,7 @@ style:
 ---
 
 [out:json][timeout:300];
-area(3607034889)->.searchArea;
+rel(2407513); map_to_area->.searchArea;
 (
   way["highway"="cycleway"](area.searchArea);
   way["highway"="footway"]["bicycle"!="no"](area.searchArea);  
